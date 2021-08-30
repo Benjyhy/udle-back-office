@@ -1,11 +1,11 @@
 <!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
 <!--  Last Published: Tue Aug 24 2021 19:48:24 GMT+0000 (Coordinated Universal Time)  -->
-<html data-wf-page="612365f775cce214fa78ba78" data-wf-site="60d9e5c840f8d51a05d3cfbf">
+<html data-wf-page="60dc6541adf37d4ac00976a7" data-wf-site="60d9e5c840f8d51a05d3cfbf">
 <head>
   <meta charset="utf-8">
-  <title>Menus - Ajouter un plat</title>
-  <meta content="Menus - Ajouter un plat" property="og:title">
-  <meta content="Menus - Ajouter un plat" property="twitter:title">
+  <title>Marketing</title>
+  <meta content="Marketing" property="og:title">
+  <meta content="Marketing" property="twitter:title">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Webflow" name="generator">
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
@@ -19,12 +19,13 @@
   <link href="images/webclip.png" rel="apple-touch-icon">
 </head>
 <body>
+  <div data-w-id="1f3bcf04-2ba8-1fdc-35e4-fe7ae29dfdad" class="nav-responsive"><img src="images/menu-2.svg" loading="lazy" alt="" class="responsive-btn-image"></div>
   <div class="section-nav wf-section">
     <div class="container-aside w-container">
       <div class="layout-aside">
-        <a href="index.html" class="wrapper__logo w-inline-block"><img src="images/logo-easyclick.svg" loading="lazy" alt=""></a>
+        <a href="home-dashboard.html" class="wrapper__logo w-inline-block"><img src="images/logo-easyclick.svg" loading="lazy" alt=""></a>
         <div class="w-layout-grid layout-grid-nav">
-          <a href="index.html" class="wrapper__nav-item w-inline-block">
+          <a href="home-dashboard.html" class="wrapper__nav-item w-inline-block">
             <div class="wrapper__nav-infos"><img src="images/home-1.svg" loading="lazy" alt="" class="nav-icon">
               <div class="nav-text">Tableau de bord</div>
             </div>
@@ -49,7 +50,7 @@
             <div class="notification-bulle-avis"></div>
           </a>
           <a href="menus.html" class="wrapper__nav-item w-inline-block">
-            <div class="wrapper__nav-infos"><img src="images/menu-current.svg" loading="lazy" alt="" class="nav-icon">
+            <div class="wrapper__nav-infos"><img src="images/cutlery.svg" loading="lazy" alt="" class="nav-icon">
               <div class="nav-text">Le menu</div>
             </div>
           </a>
@@ -63,8 +64,8 @@
               <div class="nav-text">Paiement</div>
             </div>
           </a>
-          <a href="marketing.html" class="wrapper__nav-item w-inline-block">
-            <div class="wrapper__nav-infos"><img src="images/megaphone-2.svg" loading="lazy" alt="" class="nav-icon">
+          <a href="marketing.html" aria-current="page" class="wrapper__nav-item w-inline-block w--current">
+            <div class="wrapper__nav-infos"><img src="images/marketing-current.svg" loading="lazy" alt="" class="nav-icon">
               <div class="nav-text">Marketing</div>
             </div>
           </a>
@@ -101,32 +102,66 @@
   </div>
   <div class="section-inpage wf-section">
     <div class="section-header">
-      <h1 class="header-titre">Ajouter un plat</h1>
+      <h1 class="header-titre">Vos options marketing</h1>
+      <div class="wrapper__subnav">
+        <a href="marketing.html" aria-current="page" class="commandes-nav-item-current w-inline-block w--current">
+          <div class="nav-title">Nos offres</div>
+        </a>
+        <a href="marketing-redaction-de-contenu.html" class="commandes-nav-item w-inline-block">
+          <div class="nav-title">Rédaction de contenu</div>
+        </a>
+      </div>
     </div>
-    <div class="container-ajout-plat w-container">
-      <div class="wrapper__ajout-plat">
-        <div class="wrapper_ajout-plat-image"></div>
-        <div class="wrapper__form-ajout-plat w-form">
-          <form id="email-form" name="email-form" data-name="Email Form" class="form-ajout-plat"><input type="text" class="ajout-plat-input w-input" maxlength="256" name="nom" data-name="nom" placeholder="Nom du plat" id="nom"><select id="tag-2" name="tag-2" data-name="Tag 2" class="ajout-plat-tag w-select">
-              <option value="entrees">Entrées</option>
-              <option value="plats">Plats</option>
-              <option value="desserts">Desserts</option>
-              <option value="boissons">Boissons</option>
-              <option value="accompagnements">Accompagnements</option>
-            </select><input type="text" class="ajout-plat-input w-input" maxlength="256" name="prix" data-name="prix" placeholder="Prix" id="prix"><input type="text" class="ajout-plat-input w-input" maxlength="256" name="prepa" data-name="prepa" placeholder="Temps de préparation" id="prepa"><input type="text" class="ajout-plat-input-image w-input" maxlength="256" name="image" data-name="image" placeholder="Ajoutez une image" id="image">
-            <div class="wrapper-ajout-plat-submit"><input type="submit" value="Valider" data-wait="Please wait..." class="ajout-plat-submit-btn w-button"></div>
-          </form>
-          <div class="w-form-done">
-            <div>Thank you! Your submission has been received!</div>
+    <div class="w-container">
+      <div class="w-layout-grid marketing-grid">
+        <div id="w-node-aa30aefe-35a3-06d2-6bcf-79a5687b5549-c00976a7" class="wrapper__card-marketing-gratuite"><img src="images/gratuite.jpg" loading="lazy" sizes="(max-width: 479px) 98vw, 311px" srcset="images/gratuite-p-800.jpeg 800w, images/gratuite-p-1600.jpeg 1600w, images/gratuite-p-2000.jpeg 2000w, images/gratuite-p-2600.jpeg 2600w, images/gratuite.jpg 2912w" alt="" class="card-marketing-image">
+          <div class="wrapper__marketing-info">
+            <h4 class="marketing-card-titre">Offre gratuite</h4>
+            <ul role="list" class="marketing-options-list">
+              <li class="marketing-option-list-item">Mise en avant optionnelle en fonction de vos tags (circuit court, bio…)<br><span class="option">* à partir d&#x27;un certain nombre de commandes</span></li>
+            </ul>
           </div>
-          <div class="w-form-fail">
-            <div>Oops! Something went wrong while submitting the form.</div>
+          <div class="wrapper__marketing-info-prix">
+            <div class="marketing-option-prix">0€ par mois</div>
+            <a href="#" class="marketing-btn actuel w-inline-block">
+              <div class="text-block-2">Actuelle</div>
+            </a>
+          </div>
+        </div>
+        <div id="w-node-c987e89e-28eb-2ba0-bade-4480ce9bf26a-c00976a7" class="wrapper__card-marketing-petit"><img src="images/petit.jpg" loading="lazy" sizes="(max-width: 479px) 98vw, 311px" srcset="images/petit-p-500.jpeg 500w, images/petit-p-1080.jpeg 1080w, images/petit-p-1600.jpeg 1600w, images/petit-p-2000.jpeg 2000w, images/petit-p-2600.jpeg 2600w, images/petit.jpg 3024w" alt="" class="card-marketing-image">
+          <div class="wrapper__marketing-info">
+            <h4 class="marketing-card-titre">Offre petit budget</h4>
+            <ul role="list" class="marketing-options-list">
+              <li class="marketing-option-list-item">Mise en avant sur la page d&#x27;accueil de l&#x27;application</li>
+              <li class="marketing-option-list-item">Mise en avant en fonction de vos tags (circuit court, bio…)</li>
+            </ul>
+          </div>
+          <div class="wrapper__marketing-info-prix">
+            <div class="marketing-option-prix">15,99€ par mois</div>
+            <a href="#" class="marketing-btn souscrire w-inline-block">
+              <div class="text-block-2">S&#x27;abonner</div>
+            </a>
+          </div>
+        </div>
+        <div id="w-node-d80f68aa-4473-5bfd-5498-15728d5e7104-c00976a7" class="wrapper__card-marketing-partenaire"><img src="images/partenaire.jpg" loading="lazy" sizes="(max-width: 479px) 98vw, 311px" srcset="images/partenaire-p-1080.jpeg 1080w, images/partenaire-p-1600.jpeg 1600w, images/partenaire-p-2000.jpeg 2000w, images/partenaire-p-2600.jpeg 2600w, images/partenaire-p-3200.jpeg 3200w, images/partenaire.jpg 4736w" alt="" class="card-marketing-image">
+          <div class="wrapper__marketing-info">
+            <h4 class="marketing-card-titre">Offre partenaire</h4>
+            <ul role="list" class="marketing-options-list">
+              <li class="marketing-option-list-item">Mise en avant sur la page d&#x27;accueil de l&#x27;application</li>
+              <li class="marketing-option-list-item">Publications sur le compte Instagram Easyclick</li>
+              <li class="marketing-option-list-item">Mise en avant de votre restaurant avec des articles affichés sur la page d&#x27;accueil de l&#x27;application</li>
+            </ul>
+          </div>
+          <div class="wrapper__marketing-info-prix">
+            <div class="marketing-option-prix">29,99€ par mois</div>
+            <a href="#" class="marketing-btn souscrire w-inline-block">
+              <div class="text-block-2">S&#x27;abonner</div>
+            </a>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div data-w-id="1f3bcf04-2ba8-1fdc-35e4-fe7ae29dfdad" class="nav-responsive"><img src="images/menu-2.svg" loading="lazy" alt="" class="responsive-btn-image"></div>
   <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=60d9e5c840f8d51a05d3cfbf" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="js/webflow.js" type="text/javascript"></script>
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->

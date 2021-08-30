@@ -1,0 +1,95 @@
+<div class="section-nav wf-section">
+    <div class="container-aside w-container">
+        <div class="layout-aside">
+            <a href="#" class="wrapper__logo w-inline-block"><img src="images/logo-easyclick.svg" loading="lazy"
+                    alt=""></a>
+            <div class="w-layout-grid layout-grid-nav">
+                <a href="/home-dashboard" aria-current="page" class="wrapper__nav-item w-inline-block w--current">
+                    <div class="wrapper__nav-infos"><img src="images/home-current.svg" loading="lazy" alt=""
+                            class="nav-icon-current">
+                        <div class="nav-text">Tableau de bord</div>
+                    </div>
+                </a>
+                <a href="/commandes" class="wrapper__nav-item w-inline-block">
+                    <div class="wrapper__nav-infos"><img src="images/Commandes.svg" loading="lazy" alt=""
+                            class="nav-icon">
+                        <div class="nav-text">Commandes</div>
+                    </div>
+                    <div class="notification-bulle">
+                        <div class="notification-bulle-info">
+                            <%= nbOrders %>
+                        </div>
+                    </div>
+                </a>
+                <a href="/personnalisation" class="wrapper__nav-item w-inline-block">
+                    <div class="wrapper__nav-infos"><img src="images/Personnalisation.svg" loading="lazy" alt=""
+                            class="nav-icon">
+                        <div class="nav-text">Personnalisation</div>
+                    </div>
+                </a>
+                <a href="/avis" class="wrapper__nav-item w-inline-block">
+                    <div class="wrapper__nav-infos"><img src="images/star-1.svg" loading="lazy" alt="" class="nav-icon">
+                        <div class="nav-text">Avis</div>
+                    </div>
+                    <% if (avis) { %>
+                        <div class="notification-bulle-avis"></div>
+                        <% } %>
+                </a>
+                <a href="/menus" class="wrapper__nav-item w-inline-block">
+                    <div class="wrapper__nav-infos"><img src="images/cutlery.svg" loading="lazy" alt=""
+                            class="nav-icon">
+                        <div class="nav-text">Le menu</div>
+                    </div>
+                </a>
+                <a href="/horaires" class="wrapper__nav-item w-inline-block">
+                    <div class="wrapper__nav-infos"><img src="images/calendar.svg" loading="lazy" alt=""
+                            class="nav-icon">
+                        <div class="nav-text">Horaires</div>
+                    </div>
+                </a>
+                <a href="/moyens-de-paiement" class="wrapper__nav-item w-inline-block">
+                    <div class="wrapper__nav-infos"><img src="images/wallet.svg" loading="lazy" alt="" class="nav-icon">
+                        <div class="nav-text">Paiement</div>
+                    </div>
+                </a>
+                <a href="/marketing" class="wrapper__nav-item w-inline-block">
+                    <div class="wrapper__nav-infos"><img src="images/megaphone-2.svg" loading="lazy" alt=""
+                            class="nav-icon">
+                        <div class="nav-text">Marketing</div>
+                    </div>
+                </a>
+                <a href="/utilisateurs" class="wrapper__nav-item w-inline-block">
+                    <div class="wrapper__nav-infos"><img src="images/customer.svg" loading="lazy" alt=""
+                            class="nav-icon">
+                        <div class="nav-text">Utilisateurs</div>
+                    </div>
+                </a>
+                <a href="/parametres" class="wrapper__nav-item w-inline-block">
+                    <div class="wrapper__nav-infos"><img src="images/gear.svg" loading="lazy" alt="" class="nav-icon">
+                        <div class="nav-text">Paramètres</div>
+                    </div>
+                </a>
+            </div>
+            <div class="wrapper__connexion-actu">
+                <div class="connexion-photo"><img src="images/title-1576680650.jpg" loading="lazy" sizes="100vw"
+                        srcset="images/title-1576680650-p-500.jpeg 500w, images/title-1576680650-p-800.jpeg 800w, images/title-1576680650.jpg 932w"
+                        alt="" class="user-image"></div>
+                <div class="connexion-info">
+                    <div class="connexion-info-first">
+                        <div class="connexion-info-first-text">Micheline</div>
+                    </div>
+                    <div class="connexion-info-second">
+                        <div class="connexion-info-second-text">La fleur de Lille</div>
+                    </div>
+                </div>
+                <div data-hover="" data-delay="0" class="w-dropdown">
+                    <div class="dropdown-toggle w-dropdown-toggle"><img src="images/plus.svg" loading="lazy" alt=""
+                            class="plus-dropdown-image"></div>
+                    <nav class="dropdown-list w-dropdown-list">
+                        <a href="/sessionLogout" class="w-dropdown-link">Déconnexion</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

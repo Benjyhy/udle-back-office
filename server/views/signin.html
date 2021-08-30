@@ -12,6 +12,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@500&display=swap"
         rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js" defer></script>
 </head>
 
 <body>
@@ -58,37 +61,53 @@
         </svg>
         <h1>Easy Click - Back Office</h1>
 
-        <form class="form" action="">
-            <input id="name" type="text" name="name" placeholder="Nom">
+        <form id="signin-form" class="form" action="">
             <input id="email" type="email" name="mail" placeholder="E-mail">
             <input id="pwd" type="password" name="pwd" placeholder="Mot de passe">
-            <input id="inscrire-btn" type="submit" value="S'inscrire">
+            <input id="connecter-btn" type="submit" value="Se connecter">
         </form>
-        <a href="./signin.html" class="lightText">Déjà un compte&nbsp;? Connectez-vous&nbsp;!</a>
+        <a href="/signup" class="lightText">Pas encore de compte&nbsp;? Créez-en un&nbsp;!</a>
     </section>
     <script>
-        const BTN = document.getElementById("inscrire-btn");
-        BTN.addEventListener("click", e => {
-            e.preventDefault();
-            let name = document.getElementById("name").value;
-            let email = document.getElementById("email").value;
-            let pwd = document.getElementById("pwd").value;
-            fetch('/treat-sign-up', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    user: { name: name, email: email, pwd: pwd }
+        window.addEventListener("DOMContentLoaded", () => {
+            const firebaseConfig = {
+                apiKey: "AIzaSyAHzf4Q4RbL8Zu0nZ-tDIBhKog5XfdYA1g",
+                authDomain: "udle-c3db5.firebaseapp.com",
+                databaseURL: "https://udle-c3db5-default-rtdb.europe-west1.firebasedatabase.app",
+                projectId: "udle-c3db5",
+                storageBucket: "udle-c3db5.appspot.com",
+                messagingSenderId: "329469301017",
+                appId: "1:329469301017:web:9b3555937fe389e317f588"
+            };
+
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+            document.getElementById("signin-form").addEventListener("submit", (e) => {
+                e.preventDefault();
+                let email = document.getElementById("email").value;
+                let pwd = document.getElementById("pwd").value;
+
+                firebase.auth().signInWithEmailAndPassword(email, pwd).then(({ user }) => {
+                    return user.getIdToken().then((idToken) => {
+                        return fetch("/sessionLogin", {
+                            method: "POST",
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json",
+                                "CSRF-Token": Cookies.get("XSRF-TOKEN")
+                            },
+                            body: JSON.stringify({ idToken })
+                        });
+                    });
+                }).then(() => {
+                    return firebase.auth().signOut();
                 })
-            }).then(res => {
-                if (res.ok) return res.json();
-                return res.json().then(json => Promise.reject(json));
-            }).then(({ url }) => {
-                window.location = url;
-            }).catch(e => {
-                console.error(e.error);
-            })
+                    .then(() => {
+                        window.location.assign("/home-dashboard");
+                    });
+                return false;
+            });
         });
     </script>
 </body>
@@ -142,7 +161,7 @@
         background-color: white;
     }
 
-    #inscrire-btn {
+    #connecter-btn {
         cursor: pointer;
         color: white;
         background-color: #207B76;
@@ -150,7 +169,7 @@
         transition: background-color .3s ease-in;
     }
 
-    #inscrire-btn:hover {
+    #connecter-btn:hover {
         background-color: #1d6b67;
     }
 

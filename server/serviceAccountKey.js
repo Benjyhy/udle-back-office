@@ -1,4 +1,4 @@
-{
+export default {
   "type": "service_account",
   "project_id": "udle-c3db5",
   "private_key_id": "87cff712f11d3cd350a4cd1e0b64a85af57f4ea9",

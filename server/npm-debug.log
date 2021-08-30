@@ -1780,14 +1780,14 @@
 7714 silly gunzTarPerm modified mode [ 'node_modules/jsbn/example.html', 420, 438 ]
 7715 silly gunzTarPerm extractEntry docs/output/configuring-npm/folders.html
 7716 silly gunzTarPerm modified mode [ 'docs/output/configuring-npm/folders.html', 420, 438 ]
-7717 silly gunzTarPerm extractEntry node_modules/unique-filename/coverage/__root__/index.html
+7717 silly gunzTarPerm extractEntry node_modules/unique-filename/coverage/__root__/home-dashboard.html
 7718 silly gunzTarPerm modified mode [
-7718 silly gunzTarPerm   'node_modules/unique-filename/coverage/__root__/index.html',
+7718 silly gunzTarPerm   'node_modules/unique-filename/coverage/__root__/home-dashboard.html',
 7718 silly gunzTarPerm   420,
 7718 silly gunzTarPerm   438
 7718 silly gunzTarPerm ]
-7719 silly gunzTarPerm extractEntry node_modules/unique-filename/coverage/index.html
-7720 silly gunzTarPerm modified mode [ 'node_modules/unique-filename/coverage/index.html', 420, 438 ]
+7719 silly gunzTarPerm extractEntry node_modules/unique-filename/coverage/home-dashboard.html
+7720 silly gunzTarPerm modified mode [ 'node_modules/unique-filename/coverage/home-dashboard.html', 420, 438 ]
 7721 silly gunzTarPerm extractEntry node_modules/unique-filename/coverage/__root__/index.js.html
 7722 silly gunzTarPerm modified mode [
 7722 silly gunzTarPerm   'node_modules/unique-filename/coverage/__root__/index.js.html',
