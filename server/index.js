@@ -125,6 +125,14 @@ app.get("/menus-boissons", (req, res) => {
         res.redirect("/signin");
     });
 });
+app.get("/menus-accompagnements", (req, res) => {
+    const sessionCookie = req.cookies.session || "";
+    admin.auth().verifySessionCookie(sessionCookie, true).then(() => {
+        res.render("menus-accompagnements", { nbOrders: "50", avis: false });
+    }).catch((error) => {
+        res.redirect("/signin");
+    });
+});
 app.get("/horaires", (req, res) => {
     const sessionCookie = req.cookies.session || "";
     admin.auth().verifySessionCookie(sessionCookie, true).then(() => {

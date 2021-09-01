@@ -15,11 +15,110 @@
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
   <script
     type="text/javascript">WebFont.load({ google: { families: ["Open Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic", "Poppins:200,300,regular,500,600,700,800,900"] } });</script>
-  <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
   <script
     type="text/javascript">!function (o, c) { var n = c.documentElement, t = " w-mod-"; n.className += t + "js", ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n.className += t + "touch") }(window, document);</script>
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.png" rel="apple-touch-icon">
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+  <script>
+    function getCookie(name) {
+      var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+      return v ? v[2] : null;
+    }
+    const firebaseConfig = {
+      apiKey: "AIzaSyAHzf4Q4RbL8Zu0nZ-tDIBhKog5XfdYA1g",
+      authDomain: "udle-c3db5.firebaseapp.com",
+      databaseURL: "https://udle-c3db5-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "udle-c3db5",
+      storageBucket: "udle-c3db5.appspot.com",
+      messagingSenderId: "329469301017",
+      appId: "1:329469301017:web:9b3555937fe389e317f588"
+    };
+
+    let currentArticleId;
+    let currentArticlePrice;
+    let currentArticleImage;
+    let currentArticleTitle = "";
+    let currentArticleIndex;
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let restauIds = [];
+    let firestoreDoc = [];
+
+    db.collection('business_users').where('uid', '==', getCookie('userID')).get().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        restauIds.push(doc.data().restauId);
+      });
+      db.collection('restaurants').where('id', '==', restauIds[0]).get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          firestoreDoc.push(doc.data().desserts);
+          doc.data().desserts.forEach(dessert => {
+            document.getElementById('allArticles').innerHTML += `
+            <div class="wrapper__menu-card"><img src="${dessert.img}" loading="lazy"
+            sizes="(max-width: 479px) 92vw, (max-width: 767px) 95vw, (max-width: 991px) 96vw, 97vw"
+            srcset="${dessert.img}"
+            alt="" class="menu-card-image">
+          <div class="wrapper__menu-info">
+            <h4 class="menu-card-titre">${dessert.title}</h4>
+            <div class="menu-card-info">
+              <div class="menu-card-info-txt">Prix : </div>
+              <div class="menu-card-info-txt"><strong>${dessert.price}€</strong></div>
+            </div>
+            <div class="menu-card-info">
+              <div class="menu-card-info-txt">Temps de préparation</div>
+              <div class="menu-card-info-txt"><strong>5 min</strong></div>
+            </div>
+            <div class="menu-card-info">
+              <div class="menu-card-info-txt disponiblite">Disponible</div>
+              <div class="wrapper__menu-card-btn">
+                <a data-id-article="${dessert.id}" data-title-article="${dessert.title}" data-price-article="${dessert.price}" data-img-article="${dessert.img}" href="" class="toChangeToAdd menu-card-btn w-inline-block"><img style="pointer-events: none;" src="images/gear_1.svg" loading="lazy" alt=""
+                    class="no-icon"></a>
+                <a data-id-article="${dessert.id}" href="" class="removeArticle menu-card-btn red w-inline-block"><img style="pointer-events: none;" src="images/cross.svg" loading="lazy" alt=""
+                    class="no-icon"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+            `;
+          });
+          const ARTICLES_TO_CHANGE_TO_ADD = document.querySelectorAll(".toChangeToAdd");
+          ARTICLES_TO_CHANGE_TO_ADD.forEach(article => {
+            article.addEventListener("click", e => {
+              e.preventDefault();
+              currentArticleId = e.target.dataset.idArticle;
+              currentArticlePrice = e.target.dataset.priceArticle;
+              currentArticleTitle = e.target.dataset.titleArticle;
+              currentArticleImg = e.target.dataset.imgArticle;
+              document.getElementById("articleName").value = currentArticleTitle == undefined ? "" : currentArticleTitle;
+              document.getElementById("articlePrice").value = currentArticlePrice;
+              document.getElementById("overlay").classList.add("active");
+            })
+          });
+          const ARTICLES_TO_REMOVE = document.querySelectorAll(".removeArticle");
+          ARTICLES_TO_REMOVE.forEach(article => {
+            article.addEventListener("click", e => {
+              e.preventDefault();
+              currentArticleId = e.target.dataset.idArticle;
+              db.collection("restaurants").where("id", "==", restauIds[0]).get().then((snapshot) => {
+                snapshot.docs.forEach(doc => {
+                  for (let i = 0; i < firestoreDoc[0].length; i++) {
+                    if (firestoreDoc[0][i].id == currentArticleId) {
+                      firestoreDoc[0].splice(i, 1);
+                    }
+                  }
+                  doc.ref.update({ desserts: firestoreDoc[0] }, { merge: true });
+                  e.target.parentElement.parentElement.parentElement.parentElement.remove();
+                });
+              });
+            })
+          });
+        });
+      });
+    });
+  </script>
 </head>
 
 <body>
@@ -43,117 +142,42 @@
           <a href="/menus-boissons" class="commandes-nav-item w-inline-block">
             <div class="nav-title">Boissons</div>
           </a>
-          <a href="/menus-boissons" class="commandes-nav-item w-inline-block">
-            <div class="nav-title">Accompagnements</div>
+          <a href="/menus-accompagnements" class="commandes-nav-item w-inline-block">
+            <div class="nav-title">Best-sellers</div>
           </a>
         </div>
       </div>
-      <div class="w-layout-grid menu-grid">
-        <div class="wrapper__menu-card"><img src="images/veloute.jpg" loading="lazy"
-            sizes="(max-width: 479px) 92vw, (max-width: 767px) 95vw, (max-width: 991px) 96vw, 97vw"
-            srcset="images/veloute-p-500.jpeg 500w, images/veloute-p-1080.jpeg 1080w, images/veloute-p-1600.jpeg 1600w, images/veloute-p-2000.jpeg 2000w, images/veloute-p-2600.jpeg 2600w, images/veloute-p-3200.jpeg 3200w, images/veloute.jpg 4818w"
-            alt="" class="menu-card-image">
-          <div class="wrapper__menu-info">
-            <h4 class="menu-card-titre">Velouté de butternut</h4>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt">Prix : </div>
-              <div class="menu-card-info-txt"><strong>8,99€</strong></div>
-            </div>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt">Temps de préparation</div>
-              <div class="menu-card-info-txt"><strong>5 min</strong></div>
-            </div>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt disponiblite">Disponible</div>
-              <div class="wrapper__menu-card-btn">
-                <a href="#" class="menu-card-btn w-inline-block"><img src="images/gear_1.svg" loading="lazy" alt=""
-                    class="no-icon"></a>
-                <a href="#" class="menu-card-btn red w-inline-block"><img src="images/cross.svg" loading="lazy" alt=""
-                    class="no-icon"></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="wrapper__menu-card"><img src="images/carotte.jpg" loading="lazy"
-            sizes="(max-width: 479px) 92vw, (max-width: 767px) 95vw, (max-width: 991px) 96vw, 97vw"
-            srcset="images/carotte-p-500.jpeg 500w, images/carotte-p-1080.jpeg 1080w, images/carotte-p-1600.jpeg 1600w, images/carotte.jpg 2000w"
-            alt="" class="menu-card-image">
-          <div class="wrapper__menu-info">
-            <h4 class="menu-card-titre">Soupe de carotte</h4>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt">Prix : </div>
-              <div class="menu-card-info-txt"><strong>8,99€</strong></div>
-            </div>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt">Temps de préparation</div>
-              <div class="menu-card-info-txt"><strong>5 min</strong></div>
-            </div>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt disponiblite">Disponible</div>
-              <div class="wrapper__menu-card-btn">
-                <a href="#" class="menu-card-btn w-inline-block"><img src="images/gear_1.svg" loading="lazy" alt=""
-                    class="no-icon"></a>
-                <a href="#" class="menu-card-btn red w-inline-block"><img src="images/cross.svg" loading="lazy" alt=""
-                    class="no-icon"></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="wrapper__menu-card"><img src="images/avocat.jpg" loading="lazy"
-            sizes="(max-width: 479px) 92vw, (max-width: 767px) 95vw, (max-width: 991px) 96vw, 97vw"
-            srcset="images/avocat-p-500.jpeg 500w, images/avocat-p-800.jpeg 800w, images/avocat-p-1600.jpeg 1600w, images/avocat-p-2000.jpeg 2000w, images/avocat-p-2600.jpeg 2600w, images/avocat.jpg 2848w"
-            alt="" class="menu-card-image">
-          <div class="wrapper__menu-info">
-            <h4 class="menu-card-titre">Salade avocat</h4>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt">Prix : </div>
-              <div class="menu-card-info-txt"><strong>8,99€</strong></div>
-            </div>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt">Temps de préparation</div>
-              <div class="menu-card-info-txt"><strong>5 min</strong></div>
-            </div>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt disponiblite">Disponible</div>
-              <div class="wrapper__menu-card-btn">
-                <a href="#" class="menu-card-btn w-inline-block"><img src="images/gear_1.svg" loading="lazy" alt=""
-                    class="no-icon"></a>
-                <a href="#" class="menu-card-btn red w-inline-block"><img src="images/cross.svg" loading="lazy" alt=""
-                    class="no-icon"></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="wrapper__menu-card"><img src="images/tartine.jpg" loading="lazy"
-            sizes="(max-width: 479px) 92vw, (max-width: 767px) 95vw, (max-width: 991px) 96vw, 97vw"
-            srcset="images/tartine-p-500.jpeg 500w, images/tartine-p-800.jpeg 800w, images/tartine-p-1600.jpeg 1600w, images/tartine-p-2000.jpeg 2000w, images/tartine-p-2600.jpeg 2600w, images/tartine-p-3200.jpeg 3200w, images/tartine.jpg 3673w"
-            alt="" class="menu-card-image">
-          <div class="wrapper__menu-info">
-            <h4 class="menu-card-titre">Tartine oeuf avocat</h4>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt">Prix : </div>
-              <div class="menu-card-info-txt"><strong>8,99€</strong></div>
-            </div>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt">Temps de préparation</div>
-              <div class="menu-card-info-txt"><strong>5 min</strong></div>
-            </div>
-            <div class="menu-card-info">
-              <div class="menu-card-info-txt rupture">En rupture</div>
-              <div class="wrapper__menu-card-btn">
-                <a href="#" class="menu-card-btn w-inline-block"><img src="images/gear_1.svg" loading="lazy" alt=""
-                    class="no-icon"></a>
-                <a href="#" class="menu-card-btn red w-inline-block"><img src="images/cross.svg" loading="lazy" alt=""
-                    class="no-icon"></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="wrapper__menu-card-new">
-          <a href="#" class="menu-card-new w-inline-block">
+      <div class="w-layout-grid menu-grid" id="allArticles">
+        <div class="toChangeToAdd wrapper__menu-card-new">
+          <a href="" class="menu-card-new w-inline-block">
             <div class="menu-card-new-txt"><strong class="bold-text">+ Nouveau</strong></div>
           </a>
         </div>
+      </div>
+    </div>
+    <div id="overlay" style="opacity: 0;">
+      <div class="popinArticle">
+        <form id="article-form" name="email-form" data-name="Email Form" class="personnalisation-form"
+          style="display: flex;">
+          <div class="wrapper__form1">
+            <div class="sousnav-child">
+              <h3 class="form1-titre">Ajoutez ou modifiez un article</h3>
+            </div>
+            <div>
+              <label for="articleName" class="field-label">Nom de l'article</label>
+              <input type="text" class="text-field w-input" maxlength="256" name="articleName" data-name="name"
+                placeholder="" id="articleName">
+              <label for="articlePrice" class="field-label">Prix de l'article</label>
+              <input type="number" step=".01" class="text-field w-input" maxlength="256" name="articlePrice"
+                data-name="price" placeholder="" id="articlePrice" required="">
+              <label for="articlePhoto" class="field-label">Photo de l'article</label>
+              <input type="file" class="text-field w-input" maxlength="256" name="articlePhoto" data-name="Type 2"
+                placeholder="" id="articlePhoto">
+              <div id="w-node-e51c5cc9-933f-0e2e-8443-efed4b5bf575-4db7ea70" class="submit-form"><input type="submit"
+                  value="Sauvegarder" data-wait="Veuillez patienter" class="submit-btn w-button"></div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
     <div data-w-id="1f3bcf04-2ba8-1fdc-35e4-fe7ae29dfdad" class="nav-responsive"><img src="images/menu-2.svg"
@@ -162,7 +186,86 @@
       type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"></script>
     <script src="js/webflow.js" type="text/javascript"></script>
-    <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+    <script>
+      window.addEventListener("DOMContentLoaded", e => {
+        let fileUrl = "";
+
+        document.getElementById("articlePhoto").addEventListener("change", async (e) => {
+          const file = e.target.files[0];
+          const storageRef = firebase.storage().ref();
+          const fileRef = storageRef.child(file.name);
+          await fileRef.put(file);
+          fileUrl = await fileRef.getDownloadURL();
+        });
+
+        document.getElementById("overlay").addEventListener("click", (e) => {
+          e.target.classList.remove("active");
+        });
+
+        const ALTER_ARTICLE = document.getElementById("article-form");
+
+        ALTER_ARTICLE.addEventListener("submit", e => {
+          e.preventDefault();
+          if (currentArticleId != undefined) {
+            db.collection("restaurants").where("id", "==", restauIds[0]).get().then((snapshot) => {
+              snapshot.docs.forEach(doc => {
+                firestoreDoc[0].forEach(item => {
+                  if (item.id == currentArticleId) {
+                    item.price = Number(document.getElementById("articlePrice").value);
+                    item.title = document.getElementById("articleName").value;
+                    item.img = fileUrl == "" ? currentArticleImg : fileUrl;
+                  }
+                });
+                doc.ref.update({ desserts: firestoreDoc[0] }, { merge: true });
+              });
+            });
+          } else {
+            db.collection("restaurants").where("id", "==", restauIds[0]).get().then((snapshot) => {
+              snapshot.docs.forEach(doc => {
+                let newDessert = { title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}` }
+                firestoreDoc[0].push(newDessert);
+                doc.ref.update({ desserts: firestoreDoc[0] }, { merge: true });
+              });
+            });
+          }
+          document.location.reload();
+        });
+      });
+
+    </script>
 </body>
 
 </html>
+
+<style>
+  #overlay {
+    background-color: rgba(0, 0, 0, .3);
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    opacity: 0 !important;
+    pointer-events: none;
+    transition: all .3s ease-in;
+    cursor: pointer;
+  }
+
+  #overlay.active {
+    opacity: 1 !important;
+    pointer-events: all;
+  }
+
+  #overlay .popinArticle {
+    margin: auto;
+  }
+
+  #overlay .popinArticle .field-label {
+    margin-top: 1.5em;
+  }
+
+  #overlay .popinArticle .submit-form {
+    margin-top: 1.5em;
+  }
+</style>
