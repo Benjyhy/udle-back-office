@@ -212,7 +212,7 @@
               snapshot.docs.forEach(doc => {
                 let newStarter = { title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value).toFixed(2), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}` }
                 firestoreDoc.push(newStarter);
-                doc.ref.update({ starters: firestoreDoc }, { merge: true });
+                doc.ref.update({ starters: firestoreDoc.flat() }, { merge: true });
               });
             });
           }
