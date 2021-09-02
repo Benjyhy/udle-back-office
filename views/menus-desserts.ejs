@@ -29,7 +29,7 @@
       let currentArticleIndex;
 
       let restauIds = [];
-      let firestoreDoc;
+      let firestoreDoc = [];
 
       db.collection('business_users').where('uid', '==', getCookie('userID')).get().then(snapshot => {
         snapshot.docs.forEach(doc => {
