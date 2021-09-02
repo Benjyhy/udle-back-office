@@ -201,7 +201,7 @@
                     item.img = fileUrl == "" ? currentArticleImg : fileUrl;
                   }
                 });
-                doc.ref.set({ desserts: firestoreDoc[0] }, { merge: true });
+                doc.set({ desserts: firestoreDoc[0] }, { merge: true });
               });
             });
           } else {
