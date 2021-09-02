@@ -211,8 +211,8 @@
                 let newMeal = {
                   title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}`
                 }
-                firestoreDoc[0].push(newMeal);
-                doc.set({ meals: firestoreDoc[0] }, { merge: true });
+                firestoreDoc.push(newMeal);
+                doc.set({ meals: firestoreDoc }, { merge: true });
               });
             });
           }

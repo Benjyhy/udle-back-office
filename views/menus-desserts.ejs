@@ -208,12 +208,12 @@
             db.collection("restaurants").where("id", "==", restauIds[0]).get().then((snapshot) => {
               snapshot.docs.forEach(doc => {
                 let newDessert = { title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}` }
-                firestoreDoc[0].push(newDessert);
-                doc.ref.update({ desserts: firestoreDoc[0][0] }, { merge: true });
+                firestoreDoc.push(newDessert);
+                doc.ref.update({ desserts: firestoreDoc }, { merge: true });
               });
             });
           }
-          document.location.reload();
+          // document.location.reload();
         });
       });
 
