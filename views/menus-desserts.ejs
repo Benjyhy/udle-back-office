@@ -29,7 +29,7 @@
       let currentArticleIndex;
 
       let restauIds = [];
-      let firestoreDoc = [];
+      let firestoreDoc;
 
       db.collection('business_users').where('uid', '==', getCookie('userID')).get().then(snapshot => {
         snapshot.docs.forEach(doc => {
@@ -38,7 +38,7 @@
         db.collection('restaurants').where('id', '==', restauIds[0]).get().then(snapshot => {
           snapshot.docs.forEach(doc => {
             if (doc.data().desserts) {
-              firestoreDoc.push(doc.data().desserts);
+              firestoreDoc = doc.data().desserts;
               doc.data().desserts.forEach(dessert => {
                 document.getElementById('allArticles').innerHTML += `
             <div class="wrapper__menu-card"><img src="${dessert.img}" loading="lazy"
@@ -209,7 +209,7 @@
               snapshot.docs.forEach(doc => {
                 let newDessert = { title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}` }
                 firestoreDoc.push(newDessert);
-                doc.ref.update({ desserts: firestoreDoc[0] }, { merge: true });
+                doc.ref.update({ desserts: firestoreDoc }, { merge: true });
               });
             });
           }
