@@ -37,9 +37,10 @@
         });
         db.collection('restaurants').where('id', '==', restauIds[0]).get().then(snapshot => {
           snapshot.docs.forEach(doc => {
-            firestoreDoc.push(doc.data().desserts);
-            doc.data().desserts.forEach(dessert => {
-              document.getElementById('allArticles').innerHTML += `
+            if (doc.data().desserts) {
+              firestoreDoc.push(doc.data().desserts);
+              doc.data().desserts.forEach(dessert => {
+                document.getElementById('allArticles').innerHTML += `
             <div class="wrapper__menu-card"><img src="${dessert.img}" loading="lazy"
             sizes="(max-width: 479px) 92vw, (max-width: 767px) 95vw, (max-width: 991px) 96vw, 97vw"
             srcset="${dessert.img}"
@@ -66,7 +67,8 @@
           </div>
         </div>
             `;
-            });
+              });
+            }
             const ARTICLES_TO_CHANGE_TO_ADD = document.querySelectorAll(".toChangeToAdd");
             ARTICLES_TO_CHANGE_TO_ADD.forEach(article => {
               article.addEventListener("click", e => {

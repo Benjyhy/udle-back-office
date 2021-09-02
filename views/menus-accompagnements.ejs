@@ -38,9 +38,10 @@
         });
         db.collection('restaurants').where('id', '==', restauIds[0]).get().then(snapshot => {
           snapshot.docs.forEach(doc => {
-            firestoreDoc.push(doc.data().best_sellers);
-            doc.data().best_sellers.forEach(best_seller => {
-              document.getElementById('allArticles').innerHTML += `
+            if (doc.data().best_sellers) {
+              firestoreDoc.push(doc.data().best_sellers);
+              doc.data().best_sellers.forEach(best_seller => {
+                document.getElementById('allArticles').innerHTML += `
             <div class="wrapper__menu-card"><img src="${best_seller.img}" loading="lazy"
             sizes="(max-width: 479px) 92vw, (max-width: 767px) 95vw, (max-width: 991px) 96vw, 97vw"
             srcset="${best_seller.img}"
@@ -67,7 +68,8 @@
           </div>
         </div>
             `;
-            });
+              });
+            }
             const ARTICLES_TO_CHANGE_TO_ADD = document.querySelectorAll(".toChangeToAdd");
             ARTICLES_TO_CHANGE_TO_ADD.forEach(article => {
               article.addEventListener("click", e => {
