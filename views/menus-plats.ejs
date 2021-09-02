@@ -212,7 +212,7 @@
                   title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value).toFixed(2), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}`
                 }
                 // firestoreDoc.push(newMeal);
-                doc.ref.update({ meals: newMeal }, { merge: true });
+                doc.ref.update({ meals: arrayUnion(newMeal) }, { merge: true });
               });
             });
           }
