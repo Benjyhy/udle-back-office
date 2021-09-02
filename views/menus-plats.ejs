@@ -202,7 +202,7 @@
                     item.img = fileUrl == "" ? currentArticleImg : fileUrl;
                   }
                 });
-                doc.set({ meals: firestoreDoc[0] }, { merge: true });
+                doc.ref.update({ meals: firestoreDoc[0] }, { merge: true });
               });
             });
           } else {
@@ -212,7 +212,7 @@
                   title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}`
                 }
                 firestoreDoc[0].push(newMeal);
-                doc.ref.update({ meals: firestoreDoc[0] }, { merge: true });
+                doc.set({ meals: firestoreDoc[0] }, { merge: true });
               });
             });
           }
