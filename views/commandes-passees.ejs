@@ -36,7 +36,7 @@
           });
           commandes_passees.forEach(cmd => {
             let total = 0;
-            cmd.articles.forEach(article => total += article.price);
+            cmd.articles.forEach(article => total += Number(article.price));
             let time = new Date(cmd.time);
             let hours = String(time.getHours()).padStart(2, "0");
             let minutes = String(time.getMinutes()).padStart(2, "0");
