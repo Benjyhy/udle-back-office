@@ -100,9 +100,9 @@
                 </a>
             </div>
             <div class="wrapper__connexion-actu" id="profile">
-                <div class="connexion-photo"><img id="u_photo" src="images/default_user.jpg" loading="lazy"
+                <div class="connexion-photo userinfos"><img id="u_photo" src="images/default_user.jpg" loading="lazy"
                         sizes="100vw" alt="" class="user-image"></div>
-                <div class="connexion-info">
+                <div class="connexion-info userinfos">
                     <div class="connexion-info-first">
                         <div id="u_name" class="connexion-info-first-text">Micheline</div>
                     </div>
@@ -122,7 +122,7 @@
     </div>
 </div>
 
-<div id="overlay" style="opacity: 0;">
+<div id="overlayUser" style="opacity: 0;">
     <div class="popinUser">
         <form id="user-form" name="email-form" data-name="Email Form" class="personnalisation-form"
             style="display: flex;">
@@ -148,10 +148,13 @@
 
 <script>
     window.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("profile").addEventListener("click", () => {
-            document.getElementById("overlay").classList.add("active");
+        document.querySelectorAll("userinfos").forEach(item => {
+            item.addEventListener("click", () => {
+                document.getElementById("overlayUser").classList.add("active");
+                document.getElementById("userName").value = userName;
+            });
         });
-        document.getElementById("overlay").addEventListener("click", (e) => {
+        document.getElementById("overlayUser").addEventListener("click", (e) => {
             e.target.classList.remove("active");
         });
 
@@ -169,11 +172,11 @@
 
         document.getElementById("user-form").addEventListener("submit", (e) => {
             e.preventDefault();
-            let userName = document.getElementById("userName").value;
-            let userPhoto = userFileUrl;
+            let name = document.getElementById("userName").value;
+            let photo = userFileUrl == "" ? userPhoto : userFileUrl;
             db.collection('business_users').where('uid', '==', getCookie('userID')).get().then(snapshot => {
                 snapshot.docs.forEach(doc => {
-                    doc.ref.set({ photoURL: userPhoto, displayName: userName }, { merge: true });
+                    doc.ref.set({ photoURL: photo, displayName: name }, { merge: true });
                 });
             });
             window.location.reload();
@@ -187,7 +190,7 @@
         cursor: pointer;
     }
 
-    #overlay {
+    #overlayUser {
         background-color: rgba(0, 0, 0, .3);
         position: absolute;
         top: 0;
@@ -201,20 +204,20 @@
         cursor: pointer;
     }
 
-    #overlay.active {
+    #overlayUser.active {
         opacity: 1 !important;
         pointer-events: all;
     }
 
-    #overlay .popinUser {
+    #overlayUser .popinUser {
         margin: auto;
     }
 
-    #overlay .popinUser .field-label {
+    #overlayUser .popinUser .field-label {
         margin-top: 1.5em;
     }
 
-    #overlay .popinUser .submit-form {
+    #overlayUser .popinUser .submit-form {
         margin-top: 1.5em;
     }
 </style>
