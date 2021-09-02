@@ -89,12 +89,12 @@
                 currentArticleId = e.target.dataset.idArticle;
                 db.collection("restaurants").where("id", "==", restauIds[0]).get().then((snapshot) => {
                   snapshot.docs.forEach(doc => {
-                    for (let i = 0; i < firestoreDoc[0].length; i++) {
-                      if (firestoreDoc[0][i].id == currentArticleId) {
-                        firestoreDoc[0].splice(i, 1);
+                    for (let i = 0; i < firestoreDoc.length; i++) {
+                      if (firestoreDoc[i].id == currentArticleId) {
+                        firestoreDoc.splice(i, 1);
                       }
                     }
-                    doc.ref.update({ desserts: firestoreDoc[0] }, { merge: true });
+                    doc.ref.update({ desserts: firestoreDoc }, { merge: true });
                     e.target.parentElement.parentElement.parentElement.parentElement.remove();
                   });
                 });
@@ -194,20 +194,20 @@
           if (currentArticleId != undefined) {
             db.collection("restaurants").where("id", "==", restauIds[0]).get().then((snapshot) => {
               snapshot.docs.forEach(doc => {
-                firestoreDoc[0].forEach(item => {
+                firestoreDoc.forEach(item => {
                   if (item.id == currentArticleId) {
-                    item.price = Number(document.getElementById("articlePrice").value);
+                    item.price = Number(document.getElementById("articlePrice").value).toFixed(2);
                     item.title = document.getElementById("articleName").value;
                     item.img = fileUrl == "" ? currentArticleImg : fileUrl;
                   }
                 });
-                doc.ref.update({ desserts: firestoreDoc[0] }, { merge: true });
+                doc.ref.update({ desserts: firestoreDoc }, { merge: true });
               });
             });
           } else {
             db.collection("restaurants").where("id", "==", restauIds[0]).get().then((snapshot) => {
               snapshot.docs.forEach(doc => {
-                let newDessert = { title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}` }
+                let newDessert = { title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value).toFixed(2), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}` }
                 firestoreDoc.push(newDessert);
                 doc.ref.update({ desserts: firestoreDoc }, { merge: true });
               });
