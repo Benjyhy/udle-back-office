@@ -209,7 +209,7 @@
               snapshot.docs.forEach(doc => {
                 let newDessert = { title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}` }
                 firestoreDoc[0].push(newDessert);
-                doc.ref.update({ desserts: firestoreDoc[0] }, { merge: true });
+                doc.ref.update({ desserts: firestoreDoc[0][0] }, { merge: true });
               });
             });
           }
