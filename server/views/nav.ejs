@@ -1,3 +1,32 @@
+<head>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script>
+        firebase.initializeApp(firebaseConfig);
+        let userRestau = "";
+        let userName = "";
+        let userPhoto = "";
+        const restauIdsH = [];
+        db.collection('business_users').where('uid', '==', getCookie('userID')).get().then(snapshot => {
+            snapshot.docs.forEach(doc => {
+                restauIdsH.push(doc.data().restauId);
+                userName = doc.data().displayName;
+                userPhoto = doc.data().photoURL;
+                document.getElementById("u_name").innerHTML = userName;
+                document.getElementById("u_photo").setAttribute("src", userPhoto);
+            });
+            db.collection('restaurants').where('id', '==', restauIdsH[0]).get().then(snapshot => {
+                snapshot.docs.forEach(doc => {
+                    userRestau = doc.data().name;
+                    document.getElementById("restauName-profile").innerHTML = userRestau;
+                });
+            });
+        });
+    </script>
+</head>
+
 <div class="section-nav wf-section">
     <div class="container-aside w-container">
         <div class="layout-aside">
@@ -70,16 +99,15 @@
                     </div>
                 </a>
             </div>
-            <div class="wrapper__connexion-actu">
-                <div class="connexion-photo"><img src="images/title-1576680650.jpg" loading="lazy" sizes="100vw"
-                        srcset="images/title-1576680650-p-500.jpeg 500w, images/title-1576680650-p-800.jpeg 800w, images/title-1576680650.jpg 932w"
-                        alt="" class="user-image"></div>
+            <div class="wrapper__connexion-actu" id="profile">
+                <div class="connexion-photo"><img id="u_photo" src="images/default_user.jpg" loading="lazy"
+                        sizes="100vw" alt="" class="user-image"></div>
                 <div class="connexion-info">
                     <div class="connexion-info-first">
-                        <div class="connexion-info-first-text">Micheline</div>
+                        <div id="u_name" class="connexion-info-first-text">Micheline</div>
                     </div>
                     <div class="connexion-info-second">
-                        <div class="connexion-info-second-text">La fleur de Lille</div>
+                        <div id="restauName-profile" class="connexion-info-second-text"></div>
                     </div>
                 </div>
                 <div data-hover="" data-delay="0" class="w-dropdown">
@@ -93,3 +121,100 @@
         </div>
     </div>
 </div>
+
+<div id="overlay" style="opacity: 0;">
+    <div class="popinUser">
+        <form id="user-form" name="email-form" data-name="Email Form" class="personnalisation-form"
+            style="display: flex;">
+            <div class="wrapper__form1">
+                <div class="sousnav-child">
+                    <h3 class="form1-titre">Utilisateur</h3>
+                </div>
+                <div>
+                    <label for="userName" class="field-label">Nom de l'utilisateur</label>
+                    <input type="text" class="text-field w-input" maxlength="256" name="userName" data-name="name"
+                        placeholder="" id="userName">
+                    <label for="userPhoto" class="field-label">Photo de profil</label>
+                    <input type="file" class="text-field w-input" maxlength="256" name="userPhoto" data-name="Type 2"
+                        placeholder="" id="userPhoto">
+                    <div id="w-node-e51c5cc9-933f-0e2e-8443-efed4b5bf575-4db7ea70" class="submit-form"><input
+                            type="submit" value="Sauvegarder" data-wait="Veuillez patienter"
+                            class="submit-btn w-button"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("profile").addEventListener("click", () => {
+            document.getElementById("overlay").classList.add("active");
+        });
+        document.getElementById("overlay").addEventListener("click", (e) => {
+            e.target.classList.remove("active");
+        });
+
+        let userFileUrl = "";
+
+        document.getElementById("userPhoto").addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            const storageRef = firebase.storage().ref();
+            const fileRef = storageRef.child(file.name);
+            await fileRef.put(file);
+            userFileUrl = await fileRef.getDownloadURL();
+        });
+
+
+
+        document.getElementById("user-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            let userName = document.getElementById("userName").value;
+            let userPhoto = userFileUrl;
+            db.collection('business_users').where('uid', '==', getCookie('userID')).get().then(snapshot => {
+                snapshot.docs.forEach(doc => {
+                    doc.ref.set({ photoURL: userPhoto, displayName: userName }, { merge: true });
+                });
+            });
+            window.location.reload();
+        });
+    });
+
+</script>
+
+<style>
+    #profile {
+        cursor: pointer;
+    }
+
+    #overlay {
+        background-color: rgba(0, 0, 0, .3);
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        display: flex;
+        opacity: 0 !important;
+        pointer-events: none;
+        transition: all .3s ease-in;
+        cursor: pointer;
+    }
+
+    #overlay.active {
+        opacity: 1 !important;
+        pointer-events: all;
+    }
+
+    #overlay .popinUser {
+        margin: auto;
+    }
+
+    #overlay .popinUser .field-label {
+        margin-top: 1.5em;
+    }
+
+    #overlay .popinUser .submit-form {
+        margin-top: 1.5em;
+    }
+</style>

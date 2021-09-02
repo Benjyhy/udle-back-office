@@ -199,6 +199,22 @@ app.post('/sessionLogin', (req, res) => {
         );
 });
 
+app.post('/updateUser', (req, res) => {
+    const displayName = req.body.displayName;
+    const photoURL = req.body.photoURL;
+    admin.auth()
+        .updateUser(uid, {
+            displayName: displayName,
+            photoURL: photoURL,
+        }).then((userRecord) => {
+            // See the UserRecord reference doc for the contents of userRecord.
+            console.log('Successfully updated user', userRecord.toJSON());
+        })
+        .catch((error) => {
+            console.log('Error updating user:', error);
+        });
+});
+
 app.get('/sessionLogout', (req, res) => {
     res.clearCookie("session");
     res.clearCookie("userID");

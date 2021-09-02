@@ -1,0 +1,21 @@
+<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+<script>
+    function getCookie(name) {
+        var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return v ? v[2] : null;
+    }
+    const firebaseConfig = {
+        apiKey: "AIzaSyAHzf4Q4RbL8Zu0nZ-tDIBhKog5XfdYA1g",
+        authDomain: "udle-c3db5.firebaseapp.com",
+        databaseURL: "https://udle-c3db5-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "udle-c3db5",
+        storageBucket: "udle-c3db5.appspot.com",
+        messagingSenderId: "329469301017",
+        appId: "1:329469301017:web:9b3555937fe389e317f588"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+</script>

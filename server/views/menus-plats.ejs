@@ -20,44 +20,27 @@
     type="text/javascript">!function (o, c) { var n = c.documentElement, t = " w-mod-"; n.className += t + "js", ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n.className += t + "touch") }(window, document);</script>
   <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
   <link href="images/webclip.png" rel="apple-touch-icon">
-  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
-  <script>
-    function getCookie(name) {
-      var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-      return v ? v[2] : null;
-    }
-    const firebaseConfig = {
-      apiKey: "AIzaSyAHzf4Q4RbL8Zu0nZ-tDIBhKog5XfdYA1g",
-      authDomain: "udle-c3db5.firebaseapp.com",
-      databaseURL: "https://udle-c3db5-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "udle-c3db5",
-      storageBucket: "udle-c3db5.appspot.com",
-      messagingSenderId: "329469301017",
-      appId: "1:329469301017:web:9b3555937fe389e317f588"
-    };
+  <%- include('header_scripts'); -%>
+    <script>
 
-    let currentArticleId;
-    let currentArticlePrice;
-    let currentArticleImage;
-    let currentArticleTitle = "";
-    let currentArticleIndex;
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+      let currentArticleId;
+      let currentArticlePrice;
+      let currentArticleImage;
+      let currentArticleTitle = "";
+      let currentArticleIndex;
 
-    let restauIds = [];
-    let firestoreDoc = [];
+      let restauIds = [];
+      let firestoreDoc = [];
 
-    db.collection('business_users').where('uid', '==', getCookie('userID')).get().then(snapshot => {
-      snapshot.docs.forEach(doc => {
-        restauIds.push(doc.data().restauId);
-      });
-      db.collection('restaurants').where('id', '==', restauIds[0]).get().then(snapshot => {
+      db.collection('business_users').where('uid', '==', getCookie('userID')).get().then(snapshot => {
         snapshot.docs.forEach(doc => {
-          firestoreDoc.push(doc.data().meals);
-          doc.data().meals.forEach(meal => {
-            document.getElementById('allArticles').innerHTML += `
+          restauIds.push(doc.data().restauId);
+        });
+        db.collection('restaurants').where('id', '==', restauIds[0]).get().then(snapshot => {
+          snapshot.docs.forEach(doc => {
+            firestoreDoc.push(doc.data().meals);
+            doc.data().meals.forEach(meal => {
+              document.getElementById('allArticles').innerHTML += `
             <div class="wrapper__menu-card"><img src="${meal.img}" loading="lazy"
             sizes="(max-width: 479px) 92vw, (max-width: 767px) 95vw, (max-width: 991px) 96vw, 97vw"
             srcset="${meal.img}"
@@ -84,42 +67,42 @@
           </div>
         </div>
             `;
-          });
-          const ARTICLES_TO_CHANGE_TO_ADD = document.querySelectorAll(".toChangeToAdd");
-          ARTICLES_TO_CHANGE_TO_ADD.forEach(article => {
-            article.addEventListener("click", e => {
-              e.preventDefault();
-              currentArticleId = e.target.dataset.idArticle;
-              currentArticlePrice = e.target.dataset.priceArticle;
-              currentArticleTitle = e.target.dataset.titleArticle;
-              currentArticleImg = e.target.dataset.imgArticle;
-              document.getElementById("articleName").value = currentArticleTitle == undefined ? "" : currentArticleTitle;
-              document.getElementById("articlePrice").value = currentArticlePrice;
-              document.getElementById("overlay").classList.add("active");
-            })
-          });
-          const ARTICLES_TO_REMOVE = document.querySelectorAll(".removeArticle");
-          ARTICLES_TO_REMOVE.forEach(article => {
-            article.addEventListener("click", e => {
-              e.preventDefault();
-              currentArticleId = e.target.dataset.idArticle;
-              db.collection("restaurants").where("id", "==", restauIds[0]).get().then((snapshot) => {
-                snapshot.docs.forEach(doc => {
-                  for (let i = 0; i < firestoreDoc[0].length; i++) {
-                    if (firestoreDoc[0][i].id == currentArticleId) {
-                      firestoreDoc[0].splice(i, 1);
+            });
+            const ARTICLES_TO_CHANGE_TO_ADD = document.querySelectorAll(".toChangeToAdd");
+            ARTICLES_TO_CHANGE_TO_ADD.forEach(article => {
+              article.addEventListener("click", e => {
+                e.preventDefault();
+                currentArticleId = e.target.dataset.idArticle;
+                currentArticlePrice = e.target.dataset.priceArticle;
+                currentArticleTitle = e.target.dataset.titleArticle;
+                currentArticleImg = e.target.dataset.imgArticle;
+                document.getElementById("articleName").value = currentArticleTitle == undefined ? "" : currentArticleTitle;
+                document.getElementById("articlePrice").value = currentArticlePrice;
+                document.getElementById("overlay").classList.add("active");
+              })
+            });
+            const ARTICLES_TO_REMOVE = document.querySelectorAll(".removeArticle");
+            ARTICLES_TO_REMOVE.forEach(article => {
+              article.addEventListener("click", e => {
+                e.preventDefault();
+                currentArticleId = e.target.dataset.idArticle;
+                db.collection("restaurants").where("id", "==", restauIds[0]).get().then((snapshot) => {
+                  snapshot.docs.forEach(doc => {
+                    for (let i = 0; i < firestoreDoc[0].length; i++) {
+                      if (firestoreDoc[0][i].id == currentArticleId) {
+                        firestoreDoc[0].splice(i, 1);
+                      }
                     }
-                  }
-                  doc.ref.update({ meals: firestoreDoc[0] }, { merge: true });
-                  e.target.parentElement.parentElement.parentElement.parentElement.remove();
+                    doc.ref.update({ meals: firestoreDoc[0] }, { merge: true });
+                    e.target.parentElement.parentElement.parentElement.parentElement.remove();
+                  });
                 });
-              });
-            })
+              })
+            });
           });
         });
       });
-    });
-  </script>
+    </script>
 </head>
 
 <body>
