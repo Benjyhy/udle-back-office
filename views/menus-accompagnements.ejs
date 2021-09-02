@@ -211,7 +211,7 @@
               snapshot.docs.forEach(doc => {
                 let newBestSeller = { title: document.getElementById("articleName").value, price: Number(document.getElementById("articlePrice").value), img: fileUrl, id: `${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}-${Math.random().toString(36).substr(2, 9)}` }
                 firestoreDoc.push(newBestSeller);
-                doc.ref.set({ best_sellers: firestoreDoc }, { merge: true });
+                doc.ref.set({ best_sellers: firestoreDoc[0] }, { merge: true });
               });
             });
           }
